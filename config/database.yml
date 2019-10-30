@@ -82,4 +82,4 @@ production:
   <<: *default
   database: wagster_api_production
   username: wagster_api
-  password: <%= ENV['WAGSTER_API3_DATABASE_PASSWORD'] %>
+  password: <%= ENV['WAGSTER_API_DATABASE_PASSWORD'] %>
