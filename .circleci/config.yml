@@ -12,10 +12,10 @@ jobs:
           PGUSER: wagster_api_test
           RAILS_ENV: test
       - image: postgres:9.6
-#        environment:
-#          POSTGRES_USER: wagster_api_test
-#          POSTGRES_DB: wagster_api_test
-#          POSTGRES_PASSWORD: ""
+        environment:
+          POSTGRES_USER: wagster_api_test
+          POSTGRES_DB: wagster_api_test
+          POSTGRES_PASSWORD: ""
 
     working_directory: ~/repo
 
