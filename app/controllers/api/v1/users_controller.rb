@@ -1,6 +1,8 @@
 class Api::V1::UsersController < ApplicationController
+  before_action :set_user, only[:show, :update, :destroy]
+  before_action :check_owner, only[:update, :destroy]
   def show
-    render json: User.find(params[:id])
+    render json: @user
   end
 
   def create
@@ -29,5 +31,13 @@ class Api::V1::UsersController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:email, :password)
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def check_owner
+    head :forbidden unless @user.id == curent_user&.id
   end
 end
