@@ -42,7 +42,7 @@ jobs:
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
       # Database setup
-      - run: bundle exec rake db:create
+#      - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
 
       # run tests
@@ -57,9 +57,9 @@ jobs:
               circleci tests split --split-by=timings)"
 
             bundle exec rspec \
-              --format progress \
+#              --format progress \
               --out /tmp/test-results/rspec.xml \
-              --format progress \
+#              --format progress \
               $TEST_FILES
 
       # collect reports
