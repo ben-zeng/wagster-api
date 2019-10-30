@@ -48,9 +48,14 @@ jobs:
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
               circleci tests split --split-by=timings)"
 
+            gem update
+            gem install bundler
+
+            rails test
+
             bundle exec rspec \
               --format progress \
-              --format RspecJunitFormatter \
+#              --format RspecJunitFormatter \
               --out /tmp/test-results/rspec.xml \
               --format progress \
               $TEST_FILES
