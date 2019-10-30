@@ -29,6 +29,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
+            gem update
+            gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
 
       - save_cache:
@@ -47,9 +49,6 @@ jobs:
             mkdir /tmp/test-results
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
               circleci tests split --split-by=timings)"
-
-            gem update
-            gem install bundler
 
             rails test
 
