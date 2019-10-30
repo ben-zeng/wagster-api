@@ -19,17 +19,27 @@ jobs:
 #            POSTGRES_USER: wagster_api_test
 #            POSTGRES_DB: wagster_api_test
 #            POSTGRES_PASSWORD: ""
-
-      - image: circleci/ruby:2.6.4
-          environment:
-            PGHOST: localhost
-            PGUSER: wagster_api_test
-            RAILS_ENV: test
-            - image: postgres:9.6
-              environment:
-                POSTGRES_USER: wagster_api_test
-                POSTGRES_DB: wagster_api_test
-                POSTGRES_PASSWORD: ""
+#
+#      - image: circleci/ruby:2.6.4
+#        environment:
+#          PGHOST: localhost
+#          PGUSER: wagster_api_test
+#          RAILS_ENV: test
+#      - image: postgres:9.6
+#        environment:
+#          POSTGRES_USER: wagster_api_test
+#          POSTGRES_DB: wagster_api_test
+#          POSTGRES_PASSWORD: ""
+      - image: circleci/ruby:2.6.3-node-browsers
+        environment:
+          PGHOST: localhost
+          PGUSER: wagster_test
+          RAILS_ENV: test
+      - image: postgres:9.5
+        environment:
+          POSTGRES_USER: wagster_test
+          POSTGRES_DB: wagster_test
+          POSTGRES_PASSWORD: ""
 
 
     working_directory: ~/repo
