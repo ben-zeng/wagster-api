@@ -12,10 +12,10 @@ jobs:
           PGUSER: wagster_api_test
           RAILS_ENV: test
       - image: postgres:9.6
-        environment:
-          POSTGRES_USER: wagster_api_test
-          POSTGRES_DB: wagster_api_test
-          POSTGRES_PASSWORD: ""
+#        environment:
+#          POSTGRES_USER: wagster_api_test
+#          POSTGRES_DB: wagster_api_test
+#          POSTGRES_PASSWORD: ""
 
     working_directory: ~/repo
 
@@ -45,9 +45,12 @@ jobs:
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
 
-      # run tests!
+      # run tests
       - run:
-          name: run tests
+          name: run rake tests
+          command: rake test
+      - run:
+          name: run rspec tests
           command: |
             mkdir /tmp/test-results
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
