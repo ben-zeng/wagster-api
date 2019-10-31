@@ -1,7 +1,6 @@
 class Api::V1::ProfilesController < ApplicationController
     def show
-        @profile = { dog_name: "Bobo", biography: "Just another cute dog" }
-
+        # @profile = { dog_name: "Bobo", biography: "Just another cute dog" }
         if @profile
           render json: @profile
         else
