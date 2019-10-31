@@ -17,9 +17,9 @@ class Api::V1::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      render kson: @user, status: :ok
+      render json: @user, status: :ok
     else
-      render kson: @user.errors, status: :unprocessable_entity
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
