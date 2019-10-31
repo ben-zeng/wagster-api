@@ -21,8 +21,16 @@ Bundler.require(*Rails.groups)
 
 module WagsterApi
   class Application < Rails::Application
+    config.load_defaults 6.0  
+    config.api_only = true
+    config.autoload_paths << Rails.root.join('lib')
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -32,7 +40,5 @@ module WagsterApi
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
-    config.api_only = true
-    config.autoload_paths << Rails.root.join('lib')
   end
 end
