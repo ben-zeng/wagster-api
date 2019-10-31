@@ -1,13 +1,14 @@
 class Api::V1::ProfilesController < ApplicationController
+
     def show
-        # @profile = { dog_name: "Bobo", biography: "Just another cute dog" }
-        if @profile
-          render json: @profile
-        else
-          render json: {
-            error: "Profile not found (id: #{params[:id]})"
-          }, status: 404
-        end
+      @profile = set_profile
+      if @profile
+        render json: @profile
+      else
+        render json: {
+        error: "Profile not found (id: #{params[:id]})"
+        }, status: 404
+      end
     end
 
     def create
@@ -19,6 +20,15 @@ class Api::V1::ProfilesController < ApplicationController
         end
     end
 
+    def update
+      @profile = set_profile
+      if @profile.update(profile_params)
+        render json: @profile, status: :ok
+      else
+        render json: @profile.errors, status: :unprocessable_entity
+      end
+    end
+
     def destroy
         @profile.destroy
         head 204
@@ -27,11 +37,11 @@ class Api::V1::ProfilesController < ApplicationController
     private 
 
     def profile_params
-        params.require(:profile).permit(:dog_name, :biography)
+        params.require(:profile).permit(:dog_name, :biography, :user_id)
     end
 
     def set_profile
-        @profile = Profile.where(user_id: params[:id])
+        @profile = Profile.find_by(user_id: params[:id])
     end 
 
 end
