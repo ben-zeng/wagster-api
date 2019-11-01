@@ -1,11 +1,15 @@
 class Api::V1::UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   before_action :check_owner, only: [:update, :destroy]
-
+  before_action :set_user, only: %i[show update destroy]
 #   def show
 #     render json: User.find(params[:id])
 #   end
 # end
+  def destroy
+    @user.destroy
+    head 204
+  end 
 
   def show
     render json: @user
@@ -62,11 +66,27 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+
+    def show
+      render json: @user
+    end
+
+    def update
+      if @user.update(user_params)
+        render json: @user, status: :ok
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
 end
 
 private
 
 def user_params
   params.require(:user).permit(:emial, :password)
-end 
+end
+
+def set_user
+  @user = User.find(params[:id])
+end
+
 end
