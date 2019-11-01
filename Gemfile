@@ -46,3 +46,4 @@ gem 'jwt', '~> 2.2'
 
 gem 'rspec', '~>3.9.0'
 gem 'rspec-rails', '~>3.9.0'
+gem 'carrierwave', '~>2.0.2'

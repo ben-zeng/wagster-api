@@ -37,8 +37,9 @@ class Api::V1::ProfilesController < ApplicationController
     private 
 
     def profile_params
-        params.require(:profile).permit(:dog_name, :biography, :user_id)
+        params.require(:profile).permit(:dog_name, :biography, :user_id, :picture)
     end
+
 
     def set_profile
         @profile = Profile.find_by(user_id: params[:id])
