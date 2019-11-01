@@ -12,6 +12,7 @@ class Api::V1::ProfilesController < ApplicationController
     end
 
     def create
+      p params
         @profile = Profile.new(profile_params)
         if @profile.save
           render json: @profile, status: :created
