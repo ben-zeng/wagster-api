@@ -12,13 +12,12 @@ class Api::V1::ProfilesController < ApplicationController
     end
 
     def create
-      p params
-        @profile = Profile.new(profile_params)
-        if @profile.save
-          render json: @profile, status: :created
-        else
-          render json: @profile.errors, status: :unprocessable_entity
-        end
+      @profile = Profile.new(profile_params)
+      if @profile.save
+        render json: @profile, status: :created
+      else
+        render json: @profile.errors, status: :unprocessable_entity
+      end
     end
 
     def update
