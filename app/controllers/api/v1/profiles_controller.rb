@@ -12,12 +12,12 @@ class Api::V1::ProfilesController < ApplicationController
     end
 
     def create
-        @profile = Profile.new(profile_params)
-        if @profile.save
-          render json: @profile, status: :created
-        else
-          render json: @profile.errors, status: :unprocessable_entity
-        end
+      @profile = Profile.new(profile_params)
+      if @profile.save
+        render json: @profile, status: :created
+      else
+        render json: @profile.errors, status: :unprocessable_entity
+      end
     end
 
     def update
@@ -37,8 +37,9 @@ class Api::V1::ProfilesController < ApplicationController
     private 
 
     def profile_params
-        params.require(:profile).permit(:dog_name, :biography, :user_id)
+        params.require(:profile).permit(:dog_name, :biography, :user_id, :picture)
     end
+
 
     def set_profile
         @profile = Profile.find_by(user_id: params[:id])
