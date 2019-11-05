@@ -12,7 +12,6 @@ class Api::V1::ProfilesController < ApplicationController
     end
 
     def profiles_get
-       # to be replaced with show method
        @profile = Profile.find(params[:profile_id])
        exclude_profiles = [@profile.id.to_s] + @profile.accepted_profiles + @profile.rejected_profiles
        profile_select = Profile.where.not(id: exclude_profiles).order('random()').first(5)
@@ -22,6 +21,26 @@ class Api::V1::ProfilesController < ApplicationController
         render json: {
             error: "No new profiles, come back later!"
         }, status: 404
+      end
+    end
+
+    def accept
+      @profile = Profile.find(params[:profile_id])
+      @profile.accepted_profiles.push(params[:profile])
+      if @profile.save
+        render json: { status: :updated }
+      else
+        render json: { status: :unprocessable_entity }
+      end
+    end
+
+    def reject
+      @profile = Profile.find(params[:profile_id])
+      @profile.rejected_profiles.push(params[:profile])
+      if @profile.save
+        render json: { status: :updated }
+      else
+        render json: { status: :unprocessable_entity }
       end
     end
 
@@ -58,9 +77,5 @@ class Api::V1::ProfilesController < ApplicationController
     def set_profile
         @profile = Profile.find_by(user_id: params[:id])
     end
-
-    # def set_user
-    #     @user = User.find(params[:id])
-    # end
 
 end
