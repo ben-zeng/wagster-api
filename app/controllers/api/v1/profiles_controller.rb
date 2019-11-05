@@ -78,4 +78,7 @@ class Api::V1::ProfilesController < ApplicationController
         @profile = Profile.find_by(user_id: params[:id])
     end
 
+  def check_match
+
+  end
 end

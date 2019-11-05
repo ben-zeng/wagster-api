@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
       resources :tokens, only: [:create]
 
+      # resources :match_pairs, only: [:create]
+
+
 
     end
   end
