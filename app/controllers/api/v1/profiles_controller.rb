@@ -11,6 +11,20 @@ class Api::V1::ProfilesController < ApplicationController
       end
     end
 
+    def profiles_get
+      @profile = set_profile
+      exclude_profiles = @profile.accepted_profiles
+      @profiles = Profile.all
+
+      if @profile
+        render json: exclude_profiles
+      else
+        render json: {
+            error: "Profile not found (id: #{params[:id]})"
+        }, status: 404
+      end
+    end
+
     def create
       @profile = Profile.new(profile_params)
       if @profile.save
@@ -43,6 +57,10 @@ class Api::V1::ProfilesController < ApplicationController
 
     def set_profile
         @profile = Profile.find_by(user_id: params[:id])
-    end 
+    end
+
+    def set_user
+        @user = User.find(params[:id])
+    end
 
 end
