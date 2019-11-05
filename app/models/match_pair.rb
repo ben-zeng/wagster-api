@@ -1,4 +1,4 @@
-class Match_Pair < ApplicationRecord
+class MatchPair < ApplicationRecord
   belongs_to :profile
-  belongs_to :match, class_name: "profile"
+  belongs_to :match, class_name: "Profile"
 end
