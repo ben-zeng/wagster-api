@@ -12,15 +12,15 @@ class Api::V1::ProfilesController < ApplicationController
     end
 
     def profiles_get
-      @profile = set_profile
-      exclude_profiles = @profile.accepted_profiles
-      @profiles = Profile.all
-
-      if @profile
-        render json: exclude_profiles
+       # to be replaced with show method
+       @profile = Profile.find(params[:profile_id])
+       exclude_profiles = [@profile.id.to_s] + @profile.accepted_profiles + @profile.rejected_profiles
+       profile_select = Profile.where.not(id: exclude_profiles).order('random()').first(5)
+      if profile_select != []
+        render json: profile_select
       else
         render json: {
-            error: "Profile not found (id: #{params[:id]})"
+            error: "No new profiles, come back later!"
         }, status: 404
       end
     end
@@ -59,8 +59,8 @@ class Api::V1::ProfilesController < ApplicationController
         @profile = Profile.find_by(user_id: params[:id])
     end
 
-    def set_user
-        @user = User.find(params[:id])
-    end
+    # def set_user
+    #     @user = User.find(params[:id])
+    # end
 
 end
