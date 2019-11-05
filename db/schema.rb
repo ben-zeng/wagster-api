@@ -17,10 +17,10 @@ ActiveRecord::Schema.define(version: 2019_11_05_145513) do
 
   create_table "matches", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "friend_id", null: false
+    t.bigint "matched_user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["friend_id"], name: "index_matches_on_friend_id"
+    t.index ["matched_user_id"], name: "index_matches_on_matched_user_id"
     t.index ["user_id"], name: "index_matches_on_user_id"
   end
 
