@@ -24,6 +24,18 @@ class Api::V1::ProfilesController < ApplicationController
     end
   end
 
+  def match_show
+    @profile = Profile.find(params[:profile_id])
+    matches = MatchPair.where(profile_id: @profile.id).or(MatchPair.where(match_id: @profile.id))
+    if matches != []
+      render json: matches
+    else
+      render json: {
+          error: "No matches, come back later!"
+      }, status: 404
+    end
+  end
+
   def accept
     @profile = Profile.find(params[:profile_id])
     @profile.accepted_profiles.push(params[:profile])
