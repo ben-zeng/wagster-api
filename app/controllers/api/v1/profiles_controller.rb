@@ -60,8 +60,8 @@ class Api::V1::ProfilesController < ApplicationController
 
   def create
     @profile = Profile.new(profile_params)
+    @profile.picture_url =  @profile.picture.url
     if @profile.save
-      p @profile.picture.url
       render json: @profile, status: :created
     else
       render json: @profile.errors, status: :unprocessable_entity
