@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_01_174453) do
+ActiveRecord::Schema.define(version: 2019_11_05_212841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "match_pairs", force: :cascade do |t|
+    t.bigint "profile_id"
+    t.bigint "match_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["match_id"], name: "index_match_pairs_on_match_id"
+    t.index ["profile_id"], name: "index_match_pairs_on_profile_id"
+  end
 
   create_table "profiles", force: :cascade do |t|
     t.string "dog_name"
@@ -22,6 +31,8 @@ ActiveRecord::Schema.define(version: 2019_11_01_174453) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "picture"
+    t.text "accepted_profiles", default: [], array: true
+    t.text "rejected_profiles", default: [], array: true
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -33,4 +44,5 @@ ActiveRecord::Schema.define(version: 2019_11_01_174453) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "match_pairs", "profiles"
 end
