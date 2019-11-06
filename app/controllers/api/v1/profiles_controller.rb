@@ -15,25 +15,15 @@ class Api::V1::ProfilesController < ApplicationController
     @profile = Profile.find(params[:profile_id])
     exclude_profiles = [@profile.id.to_s] + @profile.accepted_profiles + @profile.rejected_profiles
     profile_select = Profile.where.not(id: exclude_profiles).order('random()').first(5)
-    if profile_select != []
-      render json: profile_select
-    else
-      render json: {
-          error: "No new profiles, come back later!"
-      }, status: 404
-    end
+
+    render json: profile_select
   end
 
   def match_show
     @profile = Profile.find(params[:profile_id])
     matches = MatchPair.where(profile_id: @profile.id).or(MatchPair.where(match_id: @profile.id))
-    if matches != []
-      render json: matches
-    else
-      render json: {
-          error: "No matches, come back later!"
-      }, status: 404
-    end
+
+    render json: matches
   end
 
   def accept
