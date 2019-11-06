@@ -24,3 +24,7 @@
 .idea
 
 /public/uploads/
+
+
+config/application.yml
+
