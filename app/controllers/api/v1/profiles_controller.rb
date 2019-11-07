@@ -65,7 +65,7 @@ class Api::V1::ProfilesController < ApplicationController
     if @profile.save
       render json: @profile, status: :created
     else
-      render json: @profile.errors, status: :unprocessable_entity
+      render json: {error: "Profile already created!"}, status: :unprocessable_entity
     end
   end
 
