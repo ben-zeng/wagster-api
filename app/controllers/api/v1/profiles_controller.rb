@@ -38,7 +38,7 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def accept
-    @profile = Profile.find(params[:profile_id])
+    @profile = User.find(params[:profile_id]).profile
     @profile.accepted_profiles.push(params[:profile])
 
     p match_id = check_match(params[:profile_id], params[:profile])
@@ -50,7 +50,7 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def reject
-    @profile = Profile.find(params[:profile_id])
+    @profile = User.find(params[:profile_id]).profile
     @profile.rejected_profiles.push(params[:profile])
     if @profile.save
       render json: {status: :updated}
