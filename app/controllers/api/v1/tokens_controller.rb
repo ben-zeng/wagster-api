@@ -1,6 +1,6 @@
 class Api::V1::TokensController < ApplicationController
   def create
-    @user = User.find_by_email(user_params[:email])
+    @user = User.find_by_email(user_params[:email].downcase)
     if @user&.authenticate(user_params[:password])
       render json: {
           token: JsonWebToken.encode(user_id: @user.id),
