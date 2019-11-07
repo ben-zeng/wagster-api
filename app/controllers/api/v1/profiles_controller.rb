@@ -22,9 +22,19 @@ class Api::V1::ProfilesController < ApplicationController
 
   def match_show
     @profile = User.find(params[:profile_id]).profile
-    matches = MatchPair.where(profile_id: @profile.id).or(MatchPair.where(match_id: @profile.id))
+    match_pairs = MatchPair.where(profile_id: @profile.id).or(MatchPair.where(match_id: @profile.id))
 
-    render json: matches
+    match_profile_ids = match_pairs.map do |match|
+      if match.profile_id != @profile.id
+        other_profile_id = match.profile_id
+      else
+        other_profile_id = match.match_id
+      end
+
+      other_profile_id
+    end
+
+    render json: match_profile_ids
   end
 
   def accept
