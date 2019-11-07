@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
   before_action :check_owner, only: [:update, :destroy]
 
   def show
-    render json: @user
+    render json: @user.attributes.except('password_digest')
   end
 
   def create

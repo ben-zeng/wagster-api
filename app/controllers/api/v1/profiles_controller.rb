@@ -13,7 +13,6 @@ class Api::V1::ProfilesController < ApplicationController
 
   def profiles_get
     @profile = User.find(params[:profile_id]).profile
-    # @profile = Profile.find(params[:profile_id])
     exclude_profiles = [@profile.id.to_s] + @profile.accepted_profiles + @profile.rejected_profiles
     profile_select = Profile.where.not(id: exclude_profiles).order('random()').first(5)
 
@@ -24,17 +23,24 @@ class Api::V1::ProfilesController < ApplicationController
     @profile = User.find(params[:profile_id]).profile
     match_pairs = MatchPair.where(profile_id: @profile.id).or(MatchPair.where(match_id: @profile.id))
 
-    match_profile_ids = match_pairs.map do |match|
+    match_details = match_pairs.map do |match|
       if match.profile_id != @profile.id
         other_profile_id = match.profile_id
       else
         other_profile_id = match.match_id
       end
 
-      other_profile_id
+      user_id = Profile.find(other_profile_id).user_id
+      email = User.find(user_id).email
+
+      {
+        profile_id: other_profile_id,
+        user_id: user_id,
+        email: email
+      }
     end
 
-    render json: match_profile_ids
+    render json: match_details
   end
 
   def accept
