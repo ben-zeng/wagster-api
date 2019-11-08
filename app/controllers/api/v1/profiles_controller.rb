@@ -12,7 +12,10 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def profiles_get
-    @profile = User.find(params[:profile_id]).profile
+    current_user_id = params[:profile_id]
+
+    @profile = User.find(current_user_id).profile
+
     exclude_profiles = [@profile.id.to_s] + @profile.accepted_profiles + @profile.rejected_profiles
     profile_select = Profile.where.not(id: exclude_profiles).order('random()').first(5)
 
@@ -20,7 +23,9 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def match_show
-    @profile = User.find(params[:profile_id]).profile
+    current_user_id = params[:profile_id]
+
+    @profile = User.find(current_user_id).profile
     match_pairs = MatchPair.where(profile_id: @profile.id).or(MatchPair.where(match_id: @profile.id))
 
     match_details = match_pairs.map do |match|
@@ -44,11 +49,22 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def accept
-    @profile = User.find(params[:profile_id]).profile
-    @profile.accepted_profiles.push(params[:profile])
+    current_user_id = params[:profile_id]
+    accepted_profile_id = params[:profile]
 
-    p match_id = check_match(params[:profile_id], params[:profile])
+    @profile = User.find(current_user_id).profile
+    current_profile_id = @profile.id
+
+    p "DEBUG: accept: current_user_id=#{current_user_id}, current_profile_id=#{current_profile_id}, accepted_profile_id=#{accepted_profile_id}"
+
+    @profile.accepted_profiles.push(accepted_profile_id)
+
+    match_id = check_match(current_profile_id, accepted_profile_id)
+
+    p "DEBUG: accept: match_id=#{match_id}"
+
     if @profile.save
+      p "DEBUG: accept: profile #{@profile.id} saved"
       render json: {match_id: match_id, status: :updated}
     else
       render json: {status: :unprocessable_entity}
@@ -56,8 +72,13 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def reject
-    @profile = User.find(params[:profile_id]).profile
-    @profile.rejected_profiles.push(params[:profile])
+    current_user_id = params[:profile_id]
+    other_profile_id = params[:profile]
+
+    @profile = User.find(current_user_id).profile
+
+    @profile.rejected_profiles.push(other_profile_id)
+
     if @profile.save
       render json: {status: :updated}
     else
@@ -97,14 +118,28 @@ class Api::V1::ProfilesController < ApplicationController
 
 
   def set_profile
-    @profile = Profile.find_by(user_id: params[:id])
+    user_id = params[:id]
+    @profile = Profile.find_by(user_id: user_id)
   end
 
-  def check_match(current_profile_id, profile_id)
+  def check_match(current_profile_id, accepted_profile_id)
+    current_profile_id = current_profile_id.to_s
 
-    profile_check = Profile.find(profile_id)
-    if profile_check.accepted_profiles.include?(current_profile_id)
-      match = MatchPair.find_or_create_by! profile_id: current_profile_id, match_id: profile_id
+    p "DEBUG: check_match: current_profile_id=#{current_profile_id}, accepted_profile_id=#{accepted_profile_id}"
+
+    accepted_profile = Profile.find(accepted_profile_id)
+
+    accepted_profiles = accepted_profile.accepted_profiles
+
+    p "DEBUG: check_match: accepted_profiles=#{accepted_profiles} for profile #{accepted_profile_id}"
+    p "DEBUG: current_profile_id is a string? #{current_profile_id.is_a?(String)}"
+
+    # accepted_profiles is an array of strings, so current_profile_id must be a string
+    if accepted_profiles.include?(current_profile_id)
+      match = MatchPair.find_or_create_by! profile_id: current_profile_id, match_id: accepted_profile_id
+
+      p "DEBUG: check_match: match=#{match}"
+
       match.id
     else
       nil
