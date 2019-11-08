@@ -123,10 +123,19 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def check_match(current_profile_id, accepted_profile_id)
+    current_profile_id = current_profile_id.to_s
+
     p "DEBUG: check_match: current_profile_id=#{current_profile_id}, accepted_profile_id=#{accepted_profile_id}"
 
     accepted_profile = Profile.find(accepted_profile_id)
-    if accepted_profile.accepted_profiles.include?(current_profile_id)
+
+    accepted_profiles = accepted_profile.accepted_profiles
+
+    p "DEBUG: check_match: accepted_profiles=#{accepted_profiles} for profile #{accepted_profile_id}"
+    p "DEBUG: current_profile_id is a string? #{current_profile_id.is_a?(String)}"
+
+    # accepted_profiles is an array of strings, so current_profile_id must be a string
+    if accepted_profiles.include?(current_profile_id)
       match = MatchPair.find_or_create_by! profile_id: current_profile_id, match_id: accepted_profile_id
 
       p "DEBUG: check_match: match=#{match}"
