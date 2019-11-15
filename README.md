@@ -2,10 +2,19 @@
 
 A full stack web application that allows dog owners to find potential dog buddies for their dogs.
 
-Hosted live on Heroku - [https://wagster.herokuapp.com](https://wagster.herokuapp.com/).
-
+Hosted live on Heroku - [https://wagster.herokuapp.com](https://wagster.herokuapp.com/). 
 - Built using React.js on the frontend - [GitHub Repo](https://github.com/ben-zeng/wagster_frontend/)
-- Built using Rails on the backend - [GitHub Repo](https://github.com/ben-zeng/wagster-api/)
+- Built using Rails API on the backend - [GitHub Repo](https://github.com/ben-zeng/wagster-api/)
+
+Please Note:
+ 
+- Heroku instance might be idle, it may take 10-15 seconds to load the app whilst the frontend server wakes up, and another 10-15 seconds on the first login or registration form submit whilst the backend server wakes up.
+- Currently only optimised for mobile, images will appear stretched on desktop.
+
+### Demo
+
+![Demo 1](./readme_images/wagster_demo_1.gif ) ![Demo 2](./readme_images/wagster_demo_2v2.gif)
+
 
 ### Stack used
 
