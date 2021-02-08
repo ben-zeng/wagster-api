@@ -46,7 +46,7 @@ gem 'jwt', '~> 2.2'
 
 gem 'rspec', '~>3.9.0'
 gem 'rspec-rails', '~>3.9.0'
-gem 'carrierwave', '~>2.0.2'
+gem 'carrierwave', '~>2.1.1'
 gem 'jbuilder', '~>2.9.1'
 gem 'carrierwave-base64', '~>2.8.0'
 gem 'figaro'
